@@ -1,0 +1,20 @@
+{% extends 'website/common/base.html' %}
+{% block title %}
+    Home - E-Commerce Website
+{% endblock %}
+{% block main_content %}
+<h1>Welcome to the E-Commerce Website</h1>
+<p>Explore our wide range of products and enjoy shopping!</p>
+
+<div class="product-list">
+    {% for product in Products %}
+        <div class="product-item">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p>Price: ${{ product.price }}</p>
+        </div>
+    {% empty %}
+        <p>No products available at the moment. Please check back later.</p>
+    {% endfor %}
+</div>
+{% endblock %}

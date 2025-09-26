@@ -1,0 +1,52 @@
+{% extends 'website/common/base.html' %}
+{% load static %}
+
+{% block main_content %}
+<div class="container my-5">
+    <h1 class="text-center text-primary mb-5">🛍️ Our Products</h1>
+
+    {% if products %}
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="card h-100 shadow-sm border-0 position-relative">
+                
+                <!-- Product Image -->
+                <img src="{% static 'website/images/product_placeholder.png' %}" 
+                     class="card-img-top p-2" alt="{{ product.name }}">
+
+                <!-- Out of Stock Badge -->
+                {% if product.stock == 0 %}
+                <span class="position-absolute top-0 start-0 bg-danger text-white small fw-bold px-2 py-1 rounded">
+                    Out of Stock
+                </span>
+                {% endif %}
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate" title="{{ product.name }}">{{ product.name }}</h5>
+                    <p class="card-text text-muted small mb-1">{{ product.description|truncatewords:15 }}</p>
+                    <p class="fw-bold text-success mb-1">₹{{ product.price }}</p>
+                    <p class="text-muted small mb-2">Stock: {{ product.stock }}</p>
+
+                    <form action="{% url 'add_to_cart' product.id %}" method="POST" class="mt-auto">
+                        {% csrf_token %}
+                        {% if product.stock > 0 %}
+                        <button type="submit" class="btn btn-warning w-100">
+                            Add to Cart 🛒
+                        </button>
+                        {% else %}
+                        <button type="button" class="btn btn-secondary w-100" disabled>
+                            Out of Stock
+                        </button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-info mt-5">No products available.</p>
+    {% endif %}
+</div>
+{% endblock %}

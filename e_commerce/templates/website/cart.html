@@ -1,0 +1,54 @@
+{% extends 'website/common/base.html' %}
+{% load static %}
+
+{% block main_content %}
+<div class="container my-5">
+    <h1 class="text-center text-primary mb-4">🛒 Your Cart</h1>
+
+    {% if cart_items %}
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr class="table-white">
+                <td class="fw-bold text-primary">{{ item.product.name }}</td>
+                <td class="text-success">₹{{ item.product.price }}</td>
+                <td>
+                    <form method="POST" action="{% url 'update_cart' item.product.id %}" class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm me-2" style="width:70px;">
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                </td>
+                <td class="fw-bold text-warning">₹{{ item.total }}</td>
+                <td>
+                    <form method="POST" action="{% url 'remove_from_cart' item.product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 p-3 bg-light border rounded">
+        <h4 class="fw-bold text-success mb-0">Total: ₹{{ cart_total }}</h4>
+        <a href="{% url 'checkout' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
+    </div>
+
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        Your cart is empty. <a href="{% url 'product_list' %}" class="alert-link">Shop now</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
