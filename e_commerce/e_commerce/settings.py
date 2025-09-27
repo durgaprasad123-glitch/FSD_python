@@ -61,13 +61,17 @@ WSGI_APPLICATION = 'e_commerce.wsgi.application'
 
 # ---------------- DATABASE ----------------
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'e_commerce',
+    #     'USER': 'root',
+    #     'PASSWORD': '1234',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'e_commerce',
-        'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',    
     }
 }
 AUTH_USER_MODEL = 'website.AuthUser'  # Custom user model
